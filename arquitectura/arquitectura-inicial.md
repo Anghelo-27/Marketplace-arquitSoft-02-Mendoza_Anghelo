@@ -92,7 +92,8 @@
     style BD fill:#222,stroke:#fff,color:#fff
     style Pago fill:#222,stroke:#fff,color:#fff
     style ERP fill:#222,stroke:#fff,color:#fff
-    style Envio fill:#222,stroke:#fff,color:#fff    
+    style Envio fill:#222,stroke:#fff,color:#fff 
+    ```   
 
 ## Descripción
 
