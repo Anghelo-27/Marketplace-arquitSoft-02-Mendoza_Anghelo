@@ -10,3 +10,15 @@ Formato aplicado: **Como [actor], quiero [acción], para [beneficio].**
 | **HU04** | Como cliente, quiero realizar un pedido con los productos de mi carrito, para completar mi compra. |
 | **HU05** | Como administrador, quiero gestionar los sellers de la plataforma, para administrar a los vendedores registrados. |
 | **HU06** | Como cliente, quiero consultar mis pedidos y su estado, para conocer el estado de mis compras. |
+
+---
+
+## Criterios de Aceptación (Casos Críticos)
+
+### HU03: Gestión de carrito
+* **Criterio 1:** El cliente puede incrementar o disminuir la cantidad de un artículo directamente en la vista del carrito.
+* **Criterio 2:** El sistema debe alertar si la cantidad seleccionada excede el stock reportado por el seller.
+
+### HU04: Realizar pedido
+* **Criterio 1:** El pedido sólo puede completarse si todos los ítems del carrito tienen stock validado.
+* **Criterio 2:** Al confirmar la compra, se debe redirigir a la pasarela de pago externa y generar un identificador de seguimiento único.
