@@ -114,3 +114,11 @@
 | **Lógica de Negocio** | Ejecución de reglas del marketplace (cálculo de totales, aplicación de comisiones, orquestación de pedidos y autenticación). | API REST (Node.js / Express, ASP.NET Core o FastAPI). |
 | **Datos** | Persistencia, integridad referencial y almacenamiento de catálogos, carritos y transacciones. | Base de datos relacional (PostgreSQL / SQL Server). |
 | **Sistemas Externos** | Servicios desacoplados para pasarela de pago (procesamiento transaccional) y logística/envío. | Integraciones vía HTTPS / Webhooks seguros. |
+
+---
+
+## Estrategia de Integración con Sistemas Externos
+
+* **Pasarela de Pago:** Comunicación asíncrona mediante webhooks y tokens temporales generados por la API del proveedor externo[cite: 2].
+* **Servicio de Envío:** Consulta vía API REST para cotización de tarifas en tiempo real y generación de guías de despacho[cite: 2].
+* **ERP:** Sincronización periódica o dirigida por eventos para actualización de inventario y stock de sellers[cite: 2].
