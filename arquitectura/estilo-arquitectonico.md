@@ -111,3 +111,5 @@ flowchart TD
     %% Base de Datos
     Postgres[("PostgreSQL<br>marketplace_db")]
     SharedDb -- "SQL - TCP 5432" --> Postgres
+
+    ![alt text](1.png)
