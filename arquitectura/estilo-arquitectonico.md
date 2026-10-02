@@ -1,76 +1,78 @@
 flowchart TD
+
     %% Actores
     Cliente["Cliente"]
     Seller["Seller"]
     Admin["Administrador"]
 
-    ClienteWeb["Cliente Web<br/><i>[Navegador · HTML / CSS / JavaScript]</i>"]
+    ClienteWeb["Cliente Web<br>(Navegador - HTML / CSS / JavaScript)"]
 
-    Cliente ---> ClienteWeb
-    Seller ---> ClienteWeb
-    Admin ---> ClienteWeb
+    Cliente --> ClienteWeb
+    Seller --> ClienteWeb
+    Admin --> ClienteWeb
 
-    subgraph Backend ["«monolito» Marketplace Backend [Node.js 20 LTS · Express]<br/><i>Una sola aplicación · un solo proceso · un solo despliegue</i>"]
+    subgraph Backend ["monolito Marketplace Backend [Node.js 20 LTS - Express]<br>Una sola aplicación - un solo proceso - un solo despliegue"]
         direction TB
 
-        Middlewares["<b>Middlewares Express (transversales)</b><br/>cors · express.json() · auth (JWT) · validación de entrada · manejo de errores · logger"]
+        Middlewares["Middlewares Express (transversales)<br>cors - express.json() - auth (JWT) - validación de entrada - manejo de errores - logger"]
 
-        subgraph CapaPresentacion ["1. CAPA DE PRESENTACIÓN<br/><i>Recibe peticiones HTTP, autentica, valida la entrada y responde JSON</i>"]
+        subgraph CapaPresentacion ["1. CAPA DE PRESENTACIÓN<br>Recibe peticiones HTTP, autentica, valida la entrada y responde JSON"]
             direction TB
-            subgraph ModUsuarios ["módulo usuarios<br/><code>src/modules/usuarios/</code>"]
+
+            subgraph ModUsuarios ["módulo usuarios (src/modules/usuarios/)"]
                 URoutes["usuarios.routes.js"]
                 UController["usuarios.controller.js"]
                 URoutes --> UController
             end
 
-            subgraph ModSellers ["módulo sellers<br/><code>src/modules/sellers/</code>"]
+            subgraph ModSellers ["módulo sellers (src/modules/sellers/)"]
                 SRoutes["sellers.routes.js"]
                 SController["sellers.controller.js"]
                 SRoutes --> SController
             end
 
-            subgraph ModCatalogo ["módulo catálogo<br/><code>src/modules/catalogo/</code>"]
+            subgraph ModCatalogo ["módulo catálogo (src/modules/catalogo/)"]
                 CRoutes["catalogo.routes.js"]
                 CController["catalogo.controller.js"]
                 CRoutes --> CController
             end
 
-            subgraph ModCarrito ["módulo carrito<br/><code>src/modules/carrito/</code>"]
+            subgraph ModCarrito ["módulo carrito (src/modules/carrito/)"]
                 CarRoutes["carrito.routes.js"]
                 CarController["carrito.controller.js"]
                 CarRoutes --> CarController
             end
 
-            subgraph ModPedidos ["módulo pedidos<br/><code>src/modules/pedidos/</code>"]
+            subgraph ModPedidos ["módulo pedidos (src/modules/pedidos/)"]
                 PRoutes["pedidos.routes.js"]
                 PController["pedidos.controller.js"]
                 PRoutes --> PController
             end
         end
 
-        subgraph CapaNegocio ["2. CAPA DE LÓGICA DE NEGOCIO<br/><i>Reglas de negocio y coordinación entre módulos</i>"]
-            UService["<b>usuarios.service.js</b><br/>registro, login, roles"]
-            SService["<b>sellers.service.js</b><br/>alta de tiendas, validación"]
-            CService["<b>catalogo.service.js</b><br/>productos, categorías, stock"]
-            CarService["<b>carrito.service.js</b><br/>items, totales"]
-            PService["<b>pedidos.service.js</b><br/>checkout, estados, pago/envío"]
+        subgraph CapaNegocio ["2. CAPA DE LÓGICA DE NEGOCIO<br>Reglas de negocio y coordinación entre módulos"]
+            UService["usuarios.service.js<br>registro, login, roles"]
+            SService["sellers.service.js<br>alta de tiendas, validación"]
+            CService["catalogo.service.js<br>productos, categorías, stock"]
+            CarService["carrito.service.js<br>items, totales"]
+            PService["pedidos.service.js<br>checkout, estados, pago/envío"]
         end
 
-        subgraph CapaDatos ["3. CAPA DE DATOS<br/><i>Persistencia y consultas a la base de datos</i>"]
+        subgraph CapaDatos ["3. CAPA DE DATOS<br>Persistencia y consultas a la base de datos"]
             URepository["usuarios.repository.js"]
             SRepository["sellers.repository.js"]
             CRepository["catalogo.repository.js"]
             CarRepository["carrito.repository.js"]
             PRepository["pedidos.repository.js"]
 
-            SharedDb["<b>Acceso a datos compartido</b><br/>Sequelize (ORM) · modelos · pool de conexiones (src/shared/db)"]
+            SharedDb["Acceso a datos compartido<br>Sequelize (ORM) - modelos - pool de conexiones (src/shared/db)"]
         end
 
         Middlewares --> CapaPresentacion
     end
 
     %% Petición HTTP desde Cliente Web
-    ClienteWeb -- "HTTPS / JSON<br/>/api/v1/*" --> Middlewares
+    ClienteWeb -- "HTTPS / JSON /api/v1/*" --> Middlewares
 
     %% Conexiones Presentación -> Lógica de Negocio
     UController --> UService
@@ -79,7 +81,7 @@ flowchart TD
     CarController --> CarService
     PController --> PService
 
-    %% Uso entre módulos (solo a través de su service)
+    %% Uso entre módulos
     PService -.-> UService
     PService -.-> SService
     PService -.-> CService
@@ -100,12 +102,12 @@ flowchart TD
     PRepository --> SharedDb
 
     %% Conexiones a Sistemas Externos
-    Pasarela["«sistema externo»<br/><b>Pasarela de pagos</b><br/>(p. ej. Culqi / Niubiz)"]
-    Envios["«sistema externo»<br/><b>Servicio de envíos</b><br/>(API del courier)"]
+    Pasarela["sistema externo<br>Pasarela de pagos<br>(p. ej. Culqi / Niubiz)"]
+    Envios["sistema externo<br>Servicio de envíos<br>(API del courier)"]
 
     PService -- "HTTPS / REST" --> Pasarela
     PService -- "HTTPS / REST" --> Envios
 
     %% Base de Datos
-    Postgres[("<b>PostgreSQL</b><br/>marketplace_db")]
-    SharedDb -- "SQL · TCP 5432" --> Postgres
+    Postgres[("PostgreSQL<br>marketplace_db")]
+    SharedDb -- "SQL - TCP 5432" --> Postgres
